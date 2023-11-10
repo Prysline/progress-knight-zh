@@ -422,9 +422,9 @@ function createRequiredRow(categoryName) {
 
 function createHeaderRow(templates, categoryType, categoryName) {
     var headerRow = templates.headerRow.content.firstElementChild.cloneNode(true)
-    headerRow.getElementsByClassName("category")[0].textContent = categoryName
+    headerRow.getElementsByClassName("category")[0].textContent = ZHTW[categoryName]
     if (categoryType != itemCategories) {
-        headerRow.getElementsByClassName("valueType")[0].textContent = categoryType == jobCategories ? "Income/day" : "Effect"
+        headerRow.getElementsByClassName("valueType")[0].textContent = categoryType == jobCategories ? ZHTW["Income/day"] : ZHTW["Effect"]
     }
 
     headerRow.style.backgroundColor = headerRowColors[categoryName]
@@ -437,8 +437,9 @@ function createHeaderRow(templates, categoryType, categoryName) {
 
 function createRow(templates, name, categoryName, categoryType) {
     var row = templates.row.content.firstElementChild.cloneNode(true)
-    row.getElementsByClassName("name")[0].textContent = name
-    row.getElementsByClassName("tooltipText")[0].textContent = tooltips[name]
+    row.getElementsByClassName("name")[0].textContent = ZHTW[name]
+    // row.getElementsByClassName("tooltipText")[0].textContent = tooltips[name]
+    row.getElementsByClassName("tooltipText")[0].textContent = ZHTW[name + "Tip"]
     row.id = "row " + name
     if (categoryType != itemCategories) {
         row.getElementsByClassName("progressBar")[0].onclick = function() {setTask(name)}
@@ -476,7 +477,7 @@ function updateQuickTaskDisplay(taskType) {
     var currentTask = taskType == "job" ? gameData.currentJob : gameData.currentSkill
     var quickTaskDisplayElement = document.getElementById("quickTaskDisplay")
     var progressBar = quickTaskDisplayElement.getElementsByClassName(taskType)[0]
-    progressBar.getElementsByClassName("name")[0].textContent = currentTask.name + " lvl " + currentTask.level
+    progressBar.getElementsByClassName("name")[0].textContent = ZHTW[currentTask.name] + " lvl " + currentTask.level
     progressBar.getElementsByClassName("progressFill")[0].style.width = currentTask.xp / currentTask.getMaxXp() * 100 + "%"
 }
 
@@ -527,13 +528,13 @@ function updateRequiredRows(data, categoryType) {
             if (data == gameData.taskData) {
                 if (requirementObject instanceof EvilRequirement) {
                     evilElement.classList.remove("hiddenTask")
-                    evilElement.textContent = format(requirements[0].requirement) + " evil"
+                    evilElement.textContent = format(requirements[0].requirement) + ZHTW[" evil"]
                 } else {
                     levelElement.classList.remove("hiddenTask")
                     for (requirement of requirements) {
                         var task = gameData.taskData[requirement.task]
                         if (task.level >= requirement.requirement) continue
-                        var text = " " + requirement.task + " level " + format(task.level) + "/" + format(requirement.requirement) + ","
+                        var text = " " + ZHTW[requirement.task] + " level " + format(task.level) + "/" + format(requirement.requirement) + ","
                         finalText += text
                     }
                     finalText = finalText.substring(0, finalText.length - 1)
@@ -608,7 +609,7 @@ function updateText() {
     document.getElementById("ageDisplay").textContent = daysToYears(gameData.days)
     document.getElementById("dayDisplay").textContent = getDay()
     document.getElementById("lifespanDisplay").textContent = daysToYears(getLifespan())
-    document.getElementById("pauseButton").textContent = gameData.paused ? "Play" : "Pause"
+    document.getElementById("pauseButton").textContent = gameData.paused ? ZHTW["Play"] : ZHTW["Pause"]
 
     formatCoins(gameData.coins, document.getElementById("coinDisplay"))
     setSignDisplay()
@@ -622,7 +623,7 @@ function updateText() {
     document.getElementById("evilGainDisplay").textContent = getEvilGain().toFixed(1)
 
     document.getElementById("timeWarpingDisplay").textContent = "x" + gameData.taskData["Time warping"].getEffect().toFixed(2)
-    document.getElementById("timeWarpingButton").textContent = gameData.timeWarpingEnabled ? "Disable warp" : "Enable warp"
+    document.getElementById("timeWarpingButton").textContent = gameData.timeWarpingEnabled ? ZHTW["Disable warp"] : ZHTW["Enable warp"]
 }
 
 function setSignDisplay() {
@@ -809,13 +810,13 @@ function formatCoins(coins, element) {
     for (tier of tiers) {
         var x = Math.floor(leftOver / Math.pow(10, (tiers.length - i) * 2))
         var leftOver = Math.floor(leftOver - x * Math.pow(10, (tiers.length - i) * 2))
-        var text = format(String(x)) + tier + " "
+        var text = format(String(x)) + ZHTW[tier] + " "
         element.children[i].textContent = x > 0 ? text : ""
         element.children[i].style.color = colors[tier]
         i += 1
     }
     if (leftOver == 0 && coins > 0) {element.children[3].textContent = ""; return}
-    var text = String(Math.floor(leftOver)) + "c"
+    var text = String(Math.floor(leftOver)) + ZHTW["c"]
     element.children[3].textContent = text
     element.children[3].style.color = colors["c"]
 }

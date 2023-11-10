@@ -70,7 +70,7 @@ class Skill extends Task {
 
     getEffectDescription() {
         var description = this.baseData.description
-        var text = "x" + String(this.getEffect().toFixed(2)) + " " + description
+        var text = "x" + String(this.getEffect().toFixed(2)) + " " + ZHTW[description]
         return text
     }
 }
@@ -91,8 +91,8 @@ class Item {
     }
 
     getEffectDescription() {
-        var description = this.baseData.description
-        if (itemCategories["Properties"].includes(this.name)) description = "Happiness"
+        var description = ZHTW[this.baseData.description]
+        if (itemCategories["Properties"].includes(this.name)) description = ZHTW["Happiness"]
         var text = "x" + this.baseData.effect.toFixed(1) + " " + description
         return text
     }
